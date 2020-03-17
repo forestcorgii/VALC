@@ -1,0 +1,8 @@
+*- pro & fb validation
+*- delete answered query
+*- bill count validation
+*- clear fields
+*- do not display batches with no for entry
+*- add trip number on production tab
+- add consignee and shipper fields in query form
+- add status in BOLInfo
