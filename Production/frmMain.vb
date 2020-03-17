@@ -21,11 +21,11 @@ Public Class frmMain
 
         bolContainer = New BOLInfos
         batchContainer = New BatchInfos
-        userInfo = New clsUserInfo() With {.Username = "DDCUSER109", .Fullname = "FERNANDEZ, SEAN IVAN M."}
-        'If login() = False Then
-        '    Close()
-        '    Exit Sub
-        'End If
+        userInfo = New clsUserInfo() 'With {.Username = "DDCUSER109", .Fullname = "FERNANDEZ, SEAN IVAN M."}
+        If login() = False Then
+            Close()
+            Exit Sub
+        End If
 
         If Not Directory.Exists(My.Settings.ProductionPath) Then
             MsgBox("Production Path not found.")
