@@ -38,3 +38,25 @@ E:\Sean Ivan\PROGRAMS\VALC\VALC\Production\obj\Debug\Production.vbproj.GenerateR
 E:\Sean Ivan\PROGRAMS\VALC\VALC\Production\obj\Debug\Production.exe
 E:\Sean Ivan\PROGRAMS\VALC\VALC\Production\obj\Debug\Production.xml
 E:\Sean Ivan\PROGRAMS\VALC\VALC\Production\obj\Debug\Production.pdb
+C:\Projects\VALC\Production\bin\Debug\Production.exe.config
+C:\Projects\VALC\Production\bin\Debug\Production.exe
+C:\Projects\VALC\Production\bin\Debug\Production.pdb
+C:\Projects\VALC\Production\bin\Debug\Production.xml
+C:\Projects\VALC\Production\bin\Debug\System.Data.SQLite.dll
+C:\Projects\VALC\Production\bin\Debug\SEAN.pdb
+C:\Projects\VALC\Production\bin\Debug\SEAN.xml
+C:\Projects\VALC\Production\obj\Debug\Production.vbprojResolveAssemblyReference.cache
+C:\Projects\VALC\Production\obj\Debug\Production.frmMain.resources
+C:\Projects\VALC\Production\obj\Debug\Production.Resources.resources
+C:\Projects\VALC\Production\obj\Debug\Production.sfrmHolder.resources
+C:\Projects\VALC\Production\obj\Debug\Production.sfrmLogin.resources
+C:\Projects\VALC\Production\obj\Debug\Production.sfrmQuery.resources
+C:\Projects\VALC\Production\obj\Debug\Production.sfrmSettings.resources
+C:\Projects\VALC\Production\obj\Debug\Production.vbproj.GenerateResource.cache
+C:\Projects\VALC\Production\obj\Debug\Production.vbproj.CoreCompileInputs.cache
+C:\Projects\VALC\Production\obj\Debug\Production.vbproj.CopyComplete
+C:\Projects\VALC\Production\obj\Debug\Production.exe
+C:\Projects\VALC\Production\obj\Debug\Production.xml
+C:\Projects\VALC\Production\obj\Debug\Production.pdb
+C:\Projects\VALC\Production\bin\Debug\SEAN.dll
+C:\Projects\VALC\Production\bin\Debug\MySql.Data.dll
