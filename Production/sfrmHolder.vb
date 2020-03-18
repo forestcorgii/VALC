@@ -28,25 +28,29 @@
     End Sub
 
     Private Sub tm_Tick(sender As Object, e As EventArgs) Handles tm.Tick
-        Dim tm As TimeSpan = (Now - Date.Parse(TimeInf.Start))
-        lbElapsetime.Text = String.Format("{0}:{1}", tm.Minutes, tm.Seconds)
+        Dim tm As TimeSpan = (BOL.Batch.Time - Date.Parse(TimeInf.Start))
+        lbElapsetime.Text = String.Format("{0:00}:{1:00}:{2:00}", tm.Hours, tm.Minutes, tm.Seconds)
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        TimeInf.Endd = Now.ToString("yyyy-MM-dd HH:mm:ss")
-        DialogResult = Windows.Forms.DialogResult.OK
-        Close()
+        If MsgBox("Are you sure you want to save?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            TimeInf.Endd = BOL.Batch.Time.ToString("yyyy-MM-dd HH:mm:ss")
+            DialogResult = Windows.Forms.DialogResult.OK
+            Close()
+        End If
     End Sub
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
-        DialogResult = Windows.Forms.DialogResult.Cancel
-        Close()
+        If MsgBox("Are you sure you want to cancel?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            DialogResult = Windows.Forms.DialogResult.Cancel
+            Close()
+        End If
     End Sub
 
     Private Function enterQuery() As QueryInfo
         Using query As New sfrmQuery
             If query.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                Dim _qry As QueryInfo = New QueryInfo With {.QueryAnswer = query.tbQuery.Text, .ShipperName = query.tbShipper.Text, .ConsigneeName = query.tbConsignee.Text}
+                Dim _qry As QueryInfo = New QueryInfo With {.BillerQuery = query.tbQuery.Text, .ShipperName = query.tbShipper.Text, .ConsigneeName = query.tbConsignee.Text}
                 Return _qry
             End If
         End Using
@@ -54,16 +58,18 @@
     End Function
 
     Private Sub btnQuery_Click(sender As Object, e As EventArgs) Handles btnQuery.Click, btnQuerytoVALC.Click
-        Dim _query As QueryInfo = enterQuery()
-        If _query IsNot Nothing Then
-            _query.Start = BOL.Batch.Time
-            If sender.Equals(btnQuery) Then
-                Query = _query
-            Else : QueryForVALC = _query
+        If MsgBox("Are you sure you want to save as query?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            Dim _query As QueryInfo = enterQuery()
+            If _query IsNot Nothing Then
+                _query.Start = BOL.Batch.Time
+                If sender.Equals(btnQuery) Then
+                    Query = _query
+                Else : QueryForVALC = _query
+                End If
+                TimeInf.Endd = BOL.Batch.Time.ToString("yyyy-MM-dd HH:mm:ss")
+                DialogResult = Windows.Forms.DialogResult.OK
+                Close()
             End If
-            TimeInf.Endd = Now.ToString("yyyy-MM-dd HH:mm:ss")
-            DialogResult = Windows.Forms.DialogResult.OK
-            Close()
         End If
     End Sub
 End Class

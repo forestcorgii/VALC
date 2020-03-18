@@ -19,4 +19,8 @@
             tbProductionPath.Text = SEAN.General.ConvertToUNCPath(FBD.SelectedPath)
         End If
     End Sub
+
+    Private Sub tbProductionPath_TextChanged(sender As Object, e As EventArgs) Handles tbProductionPath.TextChanged
+        tbProductionPath.Text = SEAN.General.ConvertToUNCPath(tbProductionPath.Text)
+    End Sub
 End Class

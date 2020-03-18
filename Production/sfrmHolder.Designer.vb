@@ -121,7 +121,7 @@ Partial Class sfrmHolder
         'btnCancel
         '
         Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnCancel.Location = New System.Drawing.Point(66, 291)
+        Me.btnCancel.Location = New System.Drawing.Point(66, 248)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 21)
         Me.btnCancel.TabIndex = 8
@@ -131,7 +131,7 @@ Partial Class sfrmHolder
         'btnSave
         '
         Me.btnSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnSave.Location = New System.Drawing.Point(147, 291)
+        Me.btnSave.Location = New System.Drawing.Point(147, 248)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(75, 21)
         Me.btnSave.TabIndex = 9
@@ -227,7 +227,7 @@ Partial Class sfrmHolder
         '
         Me.btnQuerytoVALC.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnQuerytoVALC.Enabled = False
-        Me.btnQuerytoVALC.Location = New System.Drawing.Point(66, 245)
+        Me.btnQuerytoVALC.Location = New System.Drawing.Point(66, 221)
         Me.btnQuerytoVALC.Name = "btnQuerytoVALC"
         Me.btnQuerytoVALC.Size = New System.Drawing.Size(156, 21)
         Me.btnQuerytoVALC.TabIndex = 18
@@ -238,7 +238,7 @@ Partial Class sfrmHolder
         'btnQuery
         '
         Me.btnQuery.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnQuery.Location = New System.Drawing.Point(66, 219)
+        Me.btnQuery.Location = New System.Drawing.Point(66, 221)
         Me.btnQuery.Name = "btnQuery"
         Me.btnQuery.Size = New System.Drawing.Size(156, 21)
         Me.btnQuery.TabIndex = 19
@@ -249,7 +249,7 @@ Partial Class sfrmHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(232, 321)
+        Me.ClientSize = New System.Drawing.Size(232, 278)
         Me.Controls.Add(Me.btnQuery)
         Me.Controls.Add(Me.btnQuerytoVALC)
         Me.Controls.Add(Me.Label1)

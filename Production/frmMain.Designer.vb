@@ -26,8 +26,6 @@ Partial Class frmMain
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.ControlsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnAddBill = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnSaveBill = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnSaveAsQuery = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnRelogin = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnSettings = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
@@ -69,8 +67,6 @@ Partial Class frmMain
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.dgvProduction = New System.Windows.Forms.DataGridView()
-        Me.tbTripNumber = New System.Windows.Forms.TextBox()
-        Me.Label8 = New System.Windows.Forms.Label()
         Me.clDatetime = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.clFolder = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.clProdTripNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -80,6 +76,8 @@ Partial Class frmMain
         Me.clStatus = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.clStarttime = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.clEndtime = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.tbTripNumber = New System.Windows.Forms.TextBox()
+        Me.Label8 = New System.Windows.Forms.Label()
         Me.MenuStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         CType(Me.dgvQueryAnswer, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -102,7 +100,7 @@ Partial Class frmMain
         '
         'ControlsToolStripMenuItem
         '
-        Me.ControlsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnAddBill, Me.mnSaveBill, Me.mnSaveAsQuery, Me.mnRelogin})
+        Me.ControlsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnAddBill, Me.mnRelogin})
         Me.ControlsToolStripMenuItem.Name = "ControlsToolStripMenuItem"
         Me.ControlsToolStripMenuItem.Size = New System.Drawing.Size(64, 20)
         Me.ControlsToolStripMenuItem.Text = "Controls"
@@ -111,27 +109,13 @@ Partial Class frmMain
         '
         Me.mnAddBill.Name = "mnAddBill"
         Me.mnAddBill.ShortcutKeys = System.Windows.Forms.Keys.F1
-        Me.mnAddBill.Size = New System.Drawing.Size(166, 22)
+        Me.mnAddBill.Size = New System.Drawing.Size(134, 22)
         Me.mnAddBill.Text = "Add Bill"
-        '
-        'mnSaveBill
-        '
-        Me.mnSaveBill.Name = "mnSaveBill"
-        Me.mnSaveBill.ShortcutKeys = System.Windows.Forms.Keys.F2
-        Me.mnSaveBill.Size = New System.Drawing.Size(166, 22)
-        Me.mnSaveBill.Text = "Save Bill"
-        '
-        'mnSaveAsQuery
-        '
-        Me.mnSaveAsQuery.Name = "mnSaveAsQuery"
-        Me.mnSaveAsQuery.ShortcutKeys = System.Windows.Forms.Keys.F5
-        Me.mnSaveAsQuery.Size = New System.Drawing.Size(166, 22)
-        Me.mnSaveAsQuery.Text = "Save as Query"
         '
         'mnRelogin
         '
         Me.mnRelogin.Name = "mnRelogin"
-        Me.mnRelogin.Size = New System.Drawing.Size(166, 22)
+        Me.mnRelogin.Size = New System.Drawing.Size(134, 22)
         Me.mnRelogin.Text = "Re-Login"
         '
         'mnSettings
@@ -168,6 +152,7 @@ Partial Class frmMain
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbRemark.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbRemark.FormattingEnabled = True
+        Me.cbRemark.Items.AddRange(New Object() {"Full Audit", "QAFA", "Processed in Synergize", "Skipped Bills"})
         Me.cbRemark.Location = New System.Drawing.Point(67, 241)
         Me.cbRemark.Name = "cbRemark"
         Me.cbRemark.Size = New System.Drawing.Size(116, 24)
@@ -494,28 +479,6 @@ Partial Class frmMain
         Me.dgvProduction.Size = New System.Drawing.Size(777, 239)
         Me.dgvProduction.TabIndex = 0
         '
-        'tbTripNumber
-        '
-        Me.tbTripNumber.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tbTripNumber.Enabled = False
-        Me.tbTripNumber.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tbTripNumber.Location = New System.Drawing.Point(67, 37)
-        Me.tbTripNumber.Name = "tbTripNumber"
-        Me.tbTripNumber.ReadOnly = True
-        Me.tbTripNumber.Size = New System.Drawing.Size(116, 22)
-        Me.tbTripNumber.TabIndex = 15
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Font = New System.Drawing.Font("Liberation Sans", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(33, 43)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(32, 12)
-        Me.Label8.TabIndex = 16
-        Me.Label8.Text = "Trip #"
-        '
         'clDatetime
         '
         Me.clDatetime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells
@@ -582,6 +545,28 @@ Partial Class frmMain
         Me.clEndtime.ReadOnly = True
         Me.clEndtime.Width = 85
         '
+        'tbTripNumber
+        '
+        Me.tbTripNumber.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.tbTripNumber.Enabled = False
+        Me.tbTripNumber.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tbTripNumber.Location = New System.Drawing.Point(67, 37)
+        Me.tbTripNumber.Name = "tbTripNumber"
+        Me.tbTripNumber.ReadOnly = True
+        Me.tbTripNumber.Size = New System.Drawing.Size(116, 22)
+        Me.tbTripNumber.TabIndex = 15
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Liberation Sans", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(33, 43)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(32, 12)
+        Me.Label8.TabIndex = 16
+        Me.Label8.Text = "Trip #"
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 14.0!)
@@ -608,6 +593,7 @@ Partial Class frmMain
         Me.Controls.Add(Me.Label4)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Liberation Sans", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.KeyPreview = True
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "frmMain"
         Me.MenuStrip1.ResumeLayout(False)
@@ -642,8 +628,6 @@ Partial Class frmMain
     Friend WithEvents dgvBatches As System.Windows.Forms.DataGridView
     Friend WithEvents lbUsername As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents mnAddBill As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnSaveBill As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnSaveAsQuery As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnSettings As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tm As System.Windows.Forms.Timer
     Friend WithEvents bgRefresher As System.ComponentModel.BackgroundWorker

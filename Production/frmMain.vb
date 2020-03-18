@@ -21,7 +21,7 @@ Public Class frmMain
 
         bolContainer = New BOLInfos
         batchContainer = New BatchInfos
-        userInfo = New clsUserInfo() 'With {.Username = "DDCUSER109", .Fullname = "FERNANDEZ, SEAN IVAN M."}
+        userInfo = New clsUserInfo() ' With {.Username = "DDCUSER109", .Fullname = "FERNANDEZ, SEAN IVAN M."}
         If login() = False Then
             Close()
             Exit Sub
@@ -32,6 +32,7 @@ Public Class frmMain
             sfrmSettings.ShowDialog()
         End If
         productionPath = My.Settings.ProductionPath
+        clearFields()
 
         tm_Tick(tm, Nothing)
         tm.Enabled = True
@@ -40,7 +41,6 @@ Public Class frmMain
 
     Private Sub collectPronumbers()
         Dim pros As New List(Of BOLInfo)
-        Dim tmppros As BOLInfo() = BOLInfos.collectProNumbers(userInfo.Username, dateFolder, BOLInfo.BOLStatus.FINISH)
         pros.AddRange(BOLInfos.collectProNumbers(userInfo.Username, dateFolder, BOLInfo.BOLStatus.FINISH))
         pros.AddRange(BOLInfos.collectProNumbers(userInfo.Username, dateFolder, BOLInfo.BOLStatus.QUERY))
         pros.AddRange(BOLInfos.collectProNumbers(userInfo.Username, dateFolder, BOLInfo.BOLStatus.REJECT))
@@ -109,17 +109,19 @@ Public Class frmMain
             MsgBox("FB Number should not be blank.")
             Return False
         End If
-
+        If Not (bolHolder.Query.Count > 0 AndAlso bolHolder.Query(bolHolder.Query.Count - 1).QueryAnswer <> "" _
+            AndAlso bolHolder.Status = "ANSWERED") Then
+            If bolContainer.Find(tbProNumber.Text, tbFBNumber.Text) IsNot Nothing Then
+                MsgBox("Duplicate Pro Number or FB Number found")
+                Return False
+            End If
+        End If
+        
         If tbFolder.Text = "" Then Return False
         'If Date.TryParse(tbStarttime.Text, New Date) = False Then
         '    MsgBox("Invalid Datetime format on Start Time")
         '    Return False
         'End If
-
-        If bolContainer.Find(tbProNumber.Text, tbFBNumber.Text) IsNot Nothing Then
-            MsgBox("Duplicate Pro Number or FB Number found")
-            Return False
-        End If
         Return True
     End Function
     Private Sub clearFields()
@@ -132,7 +134,7 @@ Public Class frmMain
         tbStarttime.Text = ""
         tbEndtime.Text = ""
 
-        cbRemark.Text = ""
+        cbRemark.SelectedIndex = 0
     End Sub
 
     Private Sub mnSettings_Click(sender As Object, e As EventArgs) Handles mnSettings.Click
@@ -147,23 +149,29 @@ Public Class frmMain
             bolHolder.Batch = batchContainer.Find(dgvBatches.Rows(_curridx).Cells(1).Value)
             tbTripNumber.Text = bolHolder.Batch.TripNo
             tbFolder.Text = bolHolder.Batch.Folder
+            tbProNumber.Focus()
+            tbProNumber.SelectAll()
         End If
     End Sub
 
     Private Sub dgvProduction_CurrentCellChanged(sender As Object, e As EventArgs) Handles dgvProduction.CurrentCellChanged, dgvProduction.GotFocus
-        If dgvBatches.CurrentCell IsNot Nothing Then
+        If dgvProduction.CurrentCell IsNot Nothing Then
             clearFields()
             Dim _curridx As Integer = dgvProduction.CurrentCell.RowIndex
             bolHolder = bolContainer.Find(dgvProduction.Rows(_curridx).Cells(3).Value, dgvProduction.Rows(_curridx).Cells(4).Value)
+            bolHolder.Batch = batchContainer.Find(dgvProduction.Rows(_curridx).Cells(2).Value)
             tbTripNumber.Text = bolHolder.Batch.TripNo
             tbFolder.Text = bolHolder.Batch.Folder
             tbProNumber.Text = bolHolder.ProNo
             tbFBNumber.Text = bolHolder.FBNo
             cbRemark.Text = bolHolder.Remarks
+            tbProNumber.Focus()
+            tbProNumber.SelectAll()
         End If
     End Sub
     Private Sub mnAddBill_Click(sender As Object, e As EventArgs) Handles mnAddBill.Click
         If validateFields() Then
+            bolHolder = bolHolder.Clone
             With bolHolder
                 .ProNo = tbProNumber.Text
                 .FBNo = tbFBNumber.Text
@@ -172,6 +180,7 @@ Public Class frmMain
                 .Username = userInfo.Username
                 .Fullname = userInfo.Fullname
 
+                .Status = "on"
                 .Query = New List(Of QueryInfo)
                 .QueryToVALC = New List(Of QueryInfo)
 
@@ -190,7 +199,7 @@ Public Class frmMain
                             .Write(BOLInfo.BOLStatus.QUERY)
                         Else
                             If .Status = "ANSWERED" Then
-                                .Status = "QUERY_BILLED"
+                                .Status = "BILLED_QUERY"
                             Else : .Status = "BILLED"
                             End If
                             .Write(BOLInfo.BOLStatus.FINISH)
@@ -242,12 +251,36 @@ Public Class frmMain
         End Using
     End Function
 
-    Private Sub mnSaveBill_Click(sender As Object, e As EventArgs) Handles mnSaveBill.Click
 
+
+    Private Sub nextField(sender As Object)
+      
     End Sub
 
-    Private Sub mnSaveAsQuery_Click(sender As Object, e As EventArgs) Handles mnSaveAsQuery.Click
-
+    Private Sub TabPage1_Click(sender As Object, e As EventArgs) Handles TabPage1.Enter
+        dgv_CurrentCellChanged(dgvBatches, Nothing)
     End Sub
 
+    Private Sub tbProNumber_KeyDown(sender As Object, e As KeyEventArgs) Handles tbProNumber.KeyDown, tbFBNumber.KeyDown, cbRemark.KeyDown
+        Select Case sender.name.toupper
+            Case "TBPRONUMBER"
+                If e.KeyCode = Keys.Down Or e.KeyCode = Keys.Enter Then
+                    tbFBNumber.Focus()
+                    tbFBNumber.SelectAll()
+                End If
+            Case "TBFBNUMBER"
+                If e.KeyCode = Keys.Down Or e.KeyCode = Keys.Enter Then
+                    cbRemark.Focus()
+                    cbRemark.SelectAll()
+                ElseIf e.KeyCode = Keys.Up Then
+                    tbProNumber.Focus()
+                    tbProNumber.SelectAll()
+                End If
+            Case "CBREMARK"
+                If e.KeyCode = Keys.Up And cbRemark.SelectedIndex = 0 Then
+                    tbFBNumber.Focus()
+                    tbFBNumber.SelectAll()
+                End If
+        End Select
+    End Sub
 End Class

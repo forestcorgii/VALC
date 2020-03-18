@@ -27,7 +27,6 @@ E:\Sean Ivan\PROGRAMS\VALC\VALC\Production\bin\Debug\System.Data.SQLite.dll
 E:\Sean Ivan\PROGRAMS\VALC\VALC\Production\bin\Debug\SEAN.pdb
 E:\Sean Ivan\PROGRAMS\VALC\VALC\Production\bin\Debug\SEAN.xml
 E:\Sean Ivan\PROGRAMS\VALC\VALC\Production\bin\Debug\System.Data.SQLite.xml
-E:\Sean Ivan\PROGRAMS\VALC\VALC\Production\obj\Debug\Production.vbprojResolveAssemblyReference.cache
 E:\Sean Ivan\PROGRAMS\VALC\VALC\Production\obj\Debug\Production.frmMain.resources
 E:\Sean Ivan\PROGRAMS\VALC\VALC\Production\obj\Debug\Production.Resources.resources
 E:\Sean Ivan\PROGRAMS\VALC\VALC\Production\obj\Debug\Production.sfrmHolder.resources
@@ -38,25 +37,56 @@ E:\Sean Ivan\PROGRAMS\VALC\VALC\Production\obj\Debug\Production.vbproj.GenerateR
 E:\Sean Ivan\PROGRAMS\VALC\VALC\Production\obj\Debug\Production.exe
 E:\Sean Ivan\PROGRAMS\VALC\VALC\Production\obj\Debug\Production.xml
 E:\Sean Ivan\PROGRAMS\VALC\VALC\Production\obj\Debug\Production.pdb
-C:\Projects\VALC\Production\bin\Debug\Production.exe.config
-C:\Projects\VALC\Production\bin\Debug\Production.exe
-C:\Projects\VALC\Production\bin\Debug\Production.pdb
-C:\Projects\VALC\Production\bin\Debug\Production.xml
-C:\Projects\VALC\Production\bin\Debug\System.Data.SQLite.dll
-C:\Projects\VALC\Production\bin\Debug\SEAN.pdb
-C:\Projects\VALC\Production\bin\Debug\SEAN.xml
-C:\Projects\VALC\Production\obj\Debug\Production.vbprojResolveAssemblyReference.cache
-C:\Projects\VALC\Production\obj\Debug\Production.frmMain.resources
-C:\Projects\VALC\Production\obj\Debug\Production.Resources.resources
-C:\Projects\VALC\Production\obj\Debug\Production.sfrmHolder.resources
-C:\Projects\VALC\Production\obj\Debug\Production.sfrmLogin.resources
-C:\Projects\VALC\Production\obj\Debug\Production.sfrmQuery.resources
-C:\Projects\VALC\Production\obj\Debug\Production.sfrmSettings.resources
-C:\Projects\VALC\Production\obj\Debug\Production.vbproj.GenerateResource.cache
-C:\Projects\VALC\Production\obj\Debug\Production.vbproj.CoreCompileInputs.cache
-C:\Projects\VALC\Production\obj\Debug\Production.vbproj.CopyComplete
-C:\Projects\VALC\Production\obj\Debug\Production.exe
-C:\Projects\VALC\Production\obj\Debug\Production.xml
-C:\Projects\VALC\Production\obj\Debug\Production.pdb
-C:\Projects\VALC\Production\bin\Debug\SEAN.dll
-C:\Projects\VALC\Production\bin\Debug\MySql.Data.dll
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\bin\Debug\Production.exe.config
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\obj\Debug\Production.exe
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\obj\Debug\Production.xml
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\obj\Debug\Production.pdb
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\bin\Debug\Production.exe
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\bin\Debug\Production.pdb
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\bin\Debug\Production.xml
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\bin\Debug\SEAN.dll
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\bin\Debug\System.Data.SQLite.dll
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\bin\Debug\SEAN.pdb
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\bin\Debug\SEAN.xml
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\bin\Debug\System.Data.SQLite.xml
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\obj\Debug\Production.vbprojResolveAssemblyReference.cache
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\obj\Debug\Production.frmMain.resources
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\obj\Debug\Production.Resources.resources
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\obj\Debug\Production.sfrmHolder.resources
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\obj\Debug\Production.sfrmLogin.resources
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\obj\Debug\Production.sfrmQuery.resources
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\obj\Debug\Production.sfrmSettings.resources
+E:\Sean Ivan\1 - Source Codes\VALC\VALC\Production\obj\Debug\Production.vbproj.GenerateResource.Cache
+E:\Sean Ivan\1 - Source Codes\VALC\Production\bin\Debug\Production.exe.config
+E:\Sean Ivan\1 - Source Codes\VALC\Production\obj\Debug\Production.exe
+E:\Sean Ivan\1 - Source Codes\VALC\Production\obj\Debug\Production.xml
+E:\Sean Ivan\1 - Source Codes\VALC\Production\obj\Debug\Production.pdb
+E:\Sean Ivan\2 - Bins\VALC\Production.exe.config
+E:\Sean Ivan\1 - Source Codes\VALC\Production\obj\Debug\Production.vbprojResolveAssemblyReference.cache
+E:\Sean Ivan\1 - Source Codes\VALC\Production\obj\Debug\Production.frmMain.resources
+E:\Sean Ivan\1 - Source Codes\VALC\Production\obj\Debug\Production.Resources.resources
+E:\Sean Ivan\1 - Source Codes\VALC\Production\obj\Debug\Production.sfrmHolder.resources
+E:\Sean Ivan\1 - Source Codes\VALC\Production\obj\Debug\Production.sfrmLogin.resources
+E:\Sean Ivan\1 - Source Codes\VALC\Production\obj\Debug\Production.sfrmQuery.resources
+E:\Sean Ivan\1 - Source Codes\VALC\Production\obj\Debug\Production.sfrmSettings.resources
+E:\Sean Ivan\1 - Source Codes\VALC\Production\obj\Debug\Production.vbproj.GenerateResource.Cache
+E:\Sean Ivan\2 - Bins\VALC\Production.exe
+E:\Sean Ivan\2 - Bins\VALC\Production.pdb
+E:\Sean Ivan\2 - Bins\VALC\Production.xml
+C:\2 - Bins\VALC\Production.exe.config
+C:\2 - Bins\VALC\Production.exe
+C:\2 - Bins\VALC\Production.pdb
+C:\2 - Bins\VALC\Production.xml
+C:\1 - Source Codes\VALC\Production\obj\Debug\Production.vbprojResolveAssemblyReference.cache
+C:\1 - Source Codes\VALC\Production\obj\Debug\Production.frmMain.resources
+C:\1 - Source Codes\VALC\Production\obj\Debug\Production.Resources.resources
+C:\1 - Source Codes\VALC\Production\obj\Debug\Production.sfrmHolder.resources
+C:\1 - Source Codes\VALC\Production\obj\Debug\Production.sfrmLogin.resources
+C:\1 - Source Codes\VALC\Production\obj\Debug\Production.sfrmQuery.resources
+C:\1 - Source Codes\VALC\Production\obj\Debug\Production.sfrmSettings.resources
+C:\1 - Source Codes\VALC\Production\obj\Debug\Production.vbproj.GenerateResource.cache
+C:\1 - Source Codes\VALC\Production\obj\Debug\Production.vbproj.CoreCompileInputs.cache
+C:\1 - Source Codes\VALC\Production\obj\Debug\Production.vbproj.CopyComplete
+C:\1 - Source Codes\VALC\Production\obj\Debug\Production.exe
+C:\1 - Source Codes\VALC\Production\obj\Debug\Production.xml
+C:\1 - Source Codes\VALC\Production\obj\Debug\Production.pdb

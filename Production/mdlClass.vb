@@ -9,6 +9,8 @@ Public Class BatchInfos
     End Function
 End Class
 Public Class BatchInfo
+    Implements ICloneable
+
     Public TripNo As String = ""
     Public ClientEmailDateTime As String = ""
     Public ClientEmail As String = ""
@@ -107,10 +109,16 @@ Public Class BatchInfo
     Public Overrides Function ToString() As String
         Return TripNo
     End Function
+
+
+    Public Function Clone() As Object Implements ICloneable.Clone
+        Return Me.MemberwiseClone()
+    End Function
 End Class
 
 Public Class BOLInfos
     Inherits List(Of BOLInfo)
+    Implements ICloneable
 
     Public Shared Function collectProNumbers(username As String, dateFolder As String, status As BOLInfo.BOLStatus) As BOLInfo()
         Dim fld As String = ""
@@ -126,16 +134,22 @@ Public Class BOLInfos
             Dim pros As String() = Directory.GetFiles(dateFolder & fld, "*" & username & ".XML")
             Return (From res In pros Select DirectCast(XmlSerialization.ReadFromFile(res, New BOLInfo), BOLInfo)).ToArray
         Catch ex As Exception
-
+            MsgBox(ex.ToString)
         End Try
-      
+        Return Nothing
     End Function
 
     Public Overloads Function Find(proNo As String, FBNo As String) As BOLInfo
         Return (From res In Me Where res.FBNo = FBNo And res.ProNo = proNo Select res).FirstOrDefault
     End Function
+
+    Public Function Clone() As Object Implements ICloneable.Clone
+        Return Me.MemberwiseClone
+    End Function
 End Class
 Public Class BOLInfo
+    Implements ICloneable
+
     Public Batch As New BatchInfo
     Public Entry As New List(Of TimeInfo)
     Public Query As New List(Of QueryInfo)
@@ -184,6 +198,10 @@ Public Class BOLInfo
         ANSWERED = 3
         REJECT = 4
     End Enum
+
+    Public Function Clone() As Object Implements ICloneable.Clone
+        Return Me.MemberwiseClone()
+    End Function
 End Class
 
 
