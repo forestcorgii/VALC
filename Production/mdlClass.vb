@@ -19,6 +19,7 @@ Public Class BatchInfo
     Public Folder As String = ""
     Public Synergized As String = ""
 
+    <Xml.Serialization.XmlIgnore> Public BatchRow As DataGridViewRow
     <Xml.Serialization.XmlIgnore> Public Filename As String
     <Xml.Serialization.XmlIgnore> Public DateFolder As String
     <Xml.Serialization.XmlIgnore> Public ReadOnly Property ForEntry As Integer
@@ -106,6 +107,11 @@ Public Class BatchInfo
         End Get
     End Property
 
+    Public Sub RefreshRow()
+
+        BatchRow.SetValues(Filename, TripNo, TA, BillCount, ForEntry, Query.Count, Billed.Count, Reject.Count, Ongoing.Count, ClientEmailDateTime, ClientEmail)
+    End Sub
+
     Public Overrides Function ToString() As String
         Return TripNo
     End Function
@@ -127,6 +133,8 @@ Public Class BOLInfos
                 fld = "\ONGOING"
             Case BOLInfo.BOLStatus.QUERY
                 fld = "\PROCESSED\QUERY"
+            Case BOLInfo.BOLStatus.ANSWERED
+                fld = "\PROCESSED\QUERY\ANSWERED"
             Case BOLInfo.BOLStatus.FINISH
                 fld = "\PROCESSED\FINISH"
         End Select
@@ -141,6 +149,9 @@ Public Class BOLInfos
 
     Public Overloads Function Find(proNo As String, FBNo As String) As BOLInfo
         Return (From res In Me Where res.FBNo = FBNo And res.ProNo = proNo Select res).FirstOrDefault
+    End Function
+    Public Overloads Function Find(bol As BOLInfo) As BOLInfo
+        Return (From res In Me Where res.FBNo = bol.FBNo And res.ProNo = bol.ProNo And res.Status = bol.Status Select res).FirstOrDefault
     End Function
 
     Public Function Clone() As Object Implements ICloneable.Clone
@@ -160,6 +171,8 @@ Public Class BOLInfo
     Public Fullname As String = ""
     Public Status As String = "" 'Billed,Reject,Query,Answered,Query_Billed
     Public Remarks As String = ""
+
+
 
     Public Sub Write(status As BOLStatus)
         Dim fld As String = ""
@@ -198,6 +211,20 @@ Public Class BOLInfo
         ANSWERED = 3
         REJECT = 4
     End Enum
+
+    <Xml.Serialization.XmlIgnore> Public ProductionRow As DataGridViewRow
+    Public Sub RefreshProductionRow()
+        Dim foundBOL As String() = Directory.GetFiles(Batch.DateFolder, String.Format("*{0}_{1}_{2}_{3}.XML", Batch.TripNo, ProNo, FBNo, Username))
+        If foundBOL.Length > 0 Then
+            Dim tempBOL As BOLInfo = XmlSerialization.ReadFromFile(foundBOL(0), foundBOL)
+            With tempBOL
+                Status = .Status
+                Entry = .Entry
+                Query = .Query
+            End With
+            ProductionRow.SetValues(Batch.ClientEmailDateTime, Batch.Folder, Batch.TripNo, ProNo, FBNo, Remarks, Status, Entry(Entry.Count - 1).Start, Entry(Entry.Count - 1).Endd)
+        End If
+    End Sub
 
     Public Function Clone() As Object Implements ICloneable.Clone
         Return Me.MemberwiseClone()

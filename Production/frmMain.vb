@@ -21,11 +21,11 @@ Public Class frmMain
 
         bolContainer = New BOLInfos
         batchContainer = New BatchInfos
-        userInfo = New clsUserInfo() ' With {.Username = "DDCUSER109", .Fullname = "FERNANDEZ, SEAN IVAN M."}
-        If login() = False Then
-            Close()
-            Exit Sub
-        End If
+        userInfo = New clsUserInfo() With {.Username = "DDCUSER109", .Fullname = "FERNANDEZ, SEAN IVAN M."}
+        'If login() = False Then
+        '    Close()
+        '    Exit Sub
+        'End If
 
         If Not Directory.Exists(My.Settings.ProductionPath) Then
             MsgBox("Production Path not found.")
@@ -43,12 +43,19 @@ Public Class frmMain
         Dim pros As New List(Of BOLInfo)
         pros.AddRange(BOLInfos.collectProNumbers(userInfo.Username, dateFolder, BOLInfo.BOLStatus.FINISH))
         pros.AddRange(BOLInfos.collectProNumbers(userInfo.Username, dateFolder, BOLInfo.BOLStatus.QUERY))
+        pros.AddRange(BOLInfos.collectProNumbers(userInfo.Username, dateFolder, BOLInfo.BOLStatus.ANSWERED))
         pros.AddRange(BOLInfos.collectProNumbers(userInfo.Username, dateFolder, BOLInfo.BOLStatus.REJECT))
-        For Each pro In pros
+        For i As Integer = 0 To pros.Count - 1
+            Dim pro As BOLInfo = pros(i)
             If bolContainer.Find(pro.ProNo, pro.FBNo) Is Nothing Then
-                bolContainer.Add(pro)
                 With pro
-                    dgvProduction.Rows.Add(.Batch.ClientEmailDateTime, .Batch.Folder, .Batch.TripNo, .ProNo, .FBNo, .Remarks, .Status, .Entry(0).Start, .Entry(0).Endd)
+                    .Batch = batchContainer.Find(.Batch.TripNo)
+                    .ProductionRow = New DataGridViewRow
+                    .ProductionRow.CreateCells(dgvProduction)
+                    .ProductionRow.SetValues(.Batch.ClientEmailDateTime, .Batch.Folder, .Batch.TripNo, .ProNo, .FBNo, .Remarks, .Status, .Entry(.Entry.Count - 1).Start, .Entry(.Entry.Count - 1).Endd)
+                    bolContainer.Add(pro)
+                    dgvProduction.Rows.Add(.ProductionRow)
+                    'dgvProduction.Rows.Add(.Batch.ClientEmailDateTime, .Batch.Folder, .Batch.TripNo, .ProNo, .FBNo, .Remarks, .Status, .Entry(0).Start, .Entry(0).Endd)
                 End With
             End If
         Next
@@ -63,8 +70,12 @@ Public Class frmMain
                 .Filename = Path.GetFileNameWithoutExtension(_batch)
                 .DateFolder = dateFolder
                 If batchContainer.Find(binf.TripNo) Is Nothing AndAlso binf.ForEntry > 0 Then
+                    .BatchRow = New DataGridViewRow
+                    .BatchRow.CreateCells(dgvBatches)
+                    .BatchRow.SetValues(.Filename, binf.TripNo, .TA, .BillCount, .ForEntry, .Query.Count, .Billed.Count, .Reject.Count, .Ongoing.Count, .ClientEmailDateTime, .ClientEmail)
                     batchContainer.Add(binf)
-                    dgvBatches.Rows.Add(.Filename, binf.TripNo, .BillCount, .ForEntry, .Query.Count, .Billed.Count, .Reject.Count, .Ongoing.Count, .ClientEmailDateTime, .TA, .ClientEmail)
+                    dgvBatches.Rows.Add(.BatchRow)
+                    'dgvBatches.Rows.Add(.Filename, binf.TripNo, .TA, .BillCount, .ForEntry, .Query.Count, .Billed.Count, .Reject.Count, .Ongoing.Count, .ClientEmailDateTime, .ClientEmail)
                 End If
             End With
         Next
@@ -79,7 +90,7 @@ Public Class frmMain
             For Each bolpath In bolpaths
                 Dim bol As BOLInfo = XmlSerialization.ReadFromFile(bolpath, New BOLInfo)
                 For Each query As QueryInfo In bol.Query
-                    dgvQueryAnswer.Rows.Add(query.Endd, bol.Batch.TripNo, bol.ProNo, bol.FBNo, query.QueryAnswer)
+                    dgvQueryAnswer.Rows.Add(query.Endd, bol.Batch.TripNo, bol.ProNo, bol.FBNo, query.BillerQuery, query.QueryAnswer)
                 Next
             Next
         End If
@@ -91,14 +102,18 @@ Public Class frmMain
             If binf.ForEntry = 0 Then
                 batchContainer.Remove(binf)
                 dgvBatches.Rows.RemoveAt(i)
-            Else
-                With binf
-                    dgvBatches.Rows(i).SetValues(.Filename, binf.TripNo, .BillCount, .ForEntry, .Query.Count, .Billed.Count, .Reject.Count, .Ongoing.Count, .ClientEmailDateTime, .TA, .ClientEmail)
-                End With
+            Else : binf.RefreshRow
+                'With binf
+                '    dgvBatches.Rows(i).SetValues(.Filename, .TripNo, binf.TA, .BillCount, .ForEntry, .Query.Count, .Billed.Count, .Reject.Count, .Ongoing.Count, .ClientEmailDateTime, .ClientEmail)
+                'End With
             End If
         Next
     End Sub
-
+    Private Sub refreshBOL()
+        For Each pro In bolContainer
+            pro.RefreshProductionRow()
+        Next
+    End Sub
     Private Function validateFields() As Boolean
         If tbProNumber.Text = "" Then
             MsgBox("Pro Number should not be blank.")
@@ -110,13 +125,13 @@ Public Class frmMain
             Return False
         End If
         If Not (bolHolder.Query.Count > 0 AndAlso bolHolder.Query(bolHolder.Query.Count - 1).QueryAnswer <> "" _
-            AndAlso bolHolder.Status = "ANSWERED") Then
+            AndAlso bolHolder.Status = "Answered") Then
             If bolContainer.Find(tbProNumber.Text, tbFBNumber.Text) IsNot Nothing Then
                 MsgBox("Duplicate Pro Number or FB Number found")
                 Return False
             End If
         End If
-        
+
         If tbFolder.Text = "" Then Return False
         'If Date.TryParse(tbStarttime.Text, New Date) = False Then
         '    MsgBox("Invalid Datetime format on Start Time")
@@ -169,6 +184,23 @@ Public Class frmMain
             tbProNumber.SelectAll()
         End If
     End Sub
+
+
+    Private Sub dgvQueryAnswer_CurrentCellChanged(sender As Object, e As EventArgs) Handles dgvQueryAnswer.CurrentCellChanged
+        If dgvQueryAnswer.CurrentCell IsNot Nothing AndAlso bolContainer.Count > 0 Then
+            clearFields()
+            Dim _curridx As Integer = dgvQueryAnswer.CurrentCell.RowIndex
+            bolHolder = bolContainer.Find(dgvQueryAnswer.Rows(_curridx).Cells(2).Value, dgvQueryAnswer.Rows(_curridx).Cells(3).Value)
+            bolHolder.Batch = batchContainer.Find(dgvQueryAnswer.Rows(_curridx).Cells(1).Value)
+            tbTripNumber.Text = bolHolder.Batch.TripNo
+            tbFolder.Text = bolHolder.Batch.Folder
+            tbProNumber.Text = bolHolder.ProNo
+            tbFBNumber.Text = bolHolder.FBNo
+            cbRemark.Text = bolHolder.Remarks
+            tbProNumber.Focus()
+            tbProNumber.SelectAll()
+        End If
+    End Sub
     Private Sub mnAddBill_Click(sender As Object, e As EventArgs) Handles mnAddBill.Click
         If validateFields() Then
             bolHolder = bolHolder.Clone
@@ -190,17 +222,17 @@ Public Class frmMain
                     If holder.ShowDialog = Windows.Forms.DialogResult.OK Then
                         .Entry.Add(holder.TimeInf)
                         If holder.Query.BillerQuery <> "" Then
-                            .Status = "QUERY"
+                            .Status = "Query"
                             .Query.Add(holder.Query)
                             .Write(BOLInfo.BOLStatus.QUERY)
                         ElseIf holder.QueryForVALC.BillerQuery <> "" Then
-                            .Status = "QUERY"
+                            .Status = "Query"
                             .QueryToVALC.Add(holder.QueryForVALC)
                             .Write(BOLInfo.BOLStatus.QUERY)
                         Else
-                            If .Status = "ANSWERED" Then
-                                .Status = "BILLED_QUERY"
-                            Else : .Status = "BILLED"
+                            If .Status = "Answered" Then
+                                .Status = "Billed Query"
+                            Else : .Status = "Billed"
                             End If
                             .Write(BOLInfo.BOLStatus.FINISH)
                         End If
@@ -225,7 +257,10 @@ Public Class frmMain
                                   refreshBatches()
                               End Sub)
             dgvQueryAnswer.Invoke(Sub() collectFeedback())
-            dgvProduction.Invoke(Sub() collectPronumbers())
+            dgvProduction.Invoke(Sub()
+                                     collectPronumbers()
+                                     refreshBOL()
+                                 End Sub)
         Catch ex As Exception
             ' MsgBox(ex.ToString)
         End Try
@@ -250,12 +285,6 @@ Public Class frmMain
             End If
         End Using
     End Function
-
-
-
-    Private Sub nextField(sender As Object)
-      
-    End Sub
 
     Private Sub TabPage1_Click(sender As Object, e As EventArgs) Handles TabPage1.Enter
         dgv_CurrentCellChanged(dgvBatches, Nothing)
@@ -283,4 +312,5 @@ Public Class frmMain
                 End If
         End Select
     End Sub
+
 End Class
