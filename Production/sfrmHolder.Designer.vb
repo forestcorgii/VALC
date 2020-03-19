@@ -33,7 +33,7 @@ Partial Class sfrmHolder
         Me.lbUsername = New System.Windows.Forms.Label()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.btnSave = New System.Windows.Forms.Button()
-        Me.tm = New System.Windows.Forms.Timer(Me.components)
+        Me.tmRefresher = New System.Windows.Forms.Timer(Me.components)
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -138,9 +138,9 @@ Partial Class sfrmHolder
         Me.btnSave.Text = "Save Bill"
         Me.btnSave.UseVisualStyleBackColor = True
         '
-        'tm
+        'tmRefresher
         '
-        Me.tm.Interval = 500
+        Me.tmRefresher.Interval = 500
         '
         'Label1
         '
@@ -287,7 +287,7 @@ Partial Class sfrmHolder
     Friend WithEvents lbUsername As System.Windows.Forms.Label
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents btnSave As System.Windows.Forms.Button
-    Friend WithEvents tm As System.Windows.Forms.Timer
+    Friend WithEvents tmRefresher As System.Windows.Forms.Timer
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label3 As System.Windows.Forms.Label

@@ -18,6 +18,7 @@ Public Class BatchInfo
     Public BillCount As String = ""
     Public Folder As String = ""
     Public Synergized As String = ""
+    Public Remarks As String = ""
 
     <Xml.Serialization.XmlIgnore> Public BatchRow As DataGridViewRow
     <Xml.Serialization.XmlIgnore> Public Filename As String
@@ -41,7 +42,7 @@ Public Class BatchInfo
             If DateFolder <> "" Then
                 Dim _query As String = DateFolder & "\PROCESSED\QUERY"
                 If Directory.Exists(_query) Then
-                    files.AddRange(Directory.GetFiles(_query, "*" & TripNo & "*.xml"))
+                    files.AddRange(Directory.GetFiles(_query, "*_" & TripNo & "_*.xml"))
                 End If
             End If
             Return files
@@ -54,7 +55,7 @@ Public Class BatchInfo
             If DateFolder <> "" Then
                 Dim _finished As String = DateFolder & "\PROCESSED\FINISH"
                 If Directory.Exists(_finished) Then
-                    files.AddRange(Directory.GetFiles(_finished, "*" & TripNo & "*.xml"))
+                    files.AddRange(Directory.GetFiles(_finished, "*_" & TripNo & "_*.xml"))
                 End If
             End If
             Return files
@@ -67,7 +68,7 @@ Public Class BatchInfo
             If DateFolder <> "" Then
                 Dim _reject As String = DateFolder & "\PROCESSED\REJECT"
                 If Directory.Exists(_reject) Then
-                    files.AddRange(Directory.GetFiles(_reject, "*" & TripNo & "*.xml"))
+                    files.AddRange(Directory.GetFiles(_reject, "*_" & TripNo & "_*.xml"))
                 End If
             End If
             Return files
@@ -80,7 +81,7 @@ Public Class BatchInfo
             If DateFolder <> "" Then
                 Dim _ongoing As String = DateFolder & "\ONGOING"
                 If Directory.Exists(_ongoing) Then
-                    files.AddRange(Directory.GetFiles(_ongoing, "*" & TripNo & "*.xml"))
+                    files.AddRange(Directory.GetFiles(_ongoing, "*_" & TripNo & "_*.xml"))
                 End If
             End If
             Return files
@@ -89,7 +90,7 @@ Public Class BatchInfo
 
     <Xml.Serialization.XmlIgnore> Public ReadOnly Property TA As String
         Get
-            Dim tm As TimeSpan = (Now - Date.Parse(ClientEmailDateTime))
+            Dim tm As TimeSpan = (Time - Date.Parse(ClientEmailDateTime))
             Return String.Format("{0:00}:{1:00}", tm.Minutes, tm.Seconds)
         End Get
     End Property
@@ -100,16 +101,53 @@ Public Class BatchInfo
             If Directory.Exists(_time) Then
                 Dim times As String() = Directory.GetFiles(_time)
                 If times.Length > 0 Then
+                    TimeUnresponsiveElapse(Path.GetFileNameWithoutExtension(times(0)).Replace("#", ":"))
                     Return Date.Parse(Path.GetFileNameWithoutExtension(times(0)).Replace("#", ":"))
                 End If
             End If
-            Return Now
+            Return Nothing
         End Get
     End Property
 
-    Public Sub RefreshRow()
+    Private savedDate_timefile As Date
+    Private savedDate_system As Date
+    Private Function TimeUnresponsiveElapse(_time As Date) As TimeSpan
+        If savedDate_timefile.ToString("HHmmss") = _time.ToString("HHmmss") Then
+            Return (Now - savedDate_system)
+        Else
+            savedDate_system = Now
+            savedDate_timefile = _time
+            Return New TimeSpan(0, 0, 0)
+        End If
+    End Function
 
-        BatchRow.SetValues(Filename, TripNo, TA, BillCount, ForEntry, Query.Count, Billed.Count, Reject.Count, Ongoing.Count, ClientEmailDateTime, ClientEmail)
+    Public Function CheckTimeManagerActivity(_elapseInSeconds As Integer) As Boolean
+        If TimeUnresponsiveElapse(Time).TotalSeconds > _elapseInSeconds Then
+            MsgBox("Time Manager is Unresponsive", MsgBoxStyle.Critical)
+            Return False
+        End If
+        Return True
+    End Function
+
+    Private Sub changeRowColor(_acolor As Color, _bcolor As Color)
+        BatchRow.DefaultCellStyle.BackColor = _bcolor
+        BatchRow.DefaultCellStyle.ForeColor = _acolor
+        '  BatchRow.DefaultCellStyle.SelectionBackColor = _acolor
+        '    BatchRow.DefaultCellStyle.SelectionForeColor = _bcolor
+    End Sub
+
+    Public Sub RefreshRow()
+        If CInt(TA.Substring(0, 2)) >= 30 Then
+            changeRowColor(Color.Maroon, Color.White)
+        ElseIf CInt(TA.Substring(0, 2)) >= 25 Then
+            changeRowColor(Color.Orange, Color.White)
+        ElseIf CInt(TA.Substring(0, 2)) >= 20 Then
+            changeRowColor(Color.Green, Color.White)
+        ElseIf CInt(TA.Substring(0, 2)) >= 15 Then
+            changeRowColor(Color.Blue, Color.White)
+        End If
+        Application.DoEvents()
+        BatchRow.SetValues(Filename, TripNo, TA, BillCount, ForEntry, Query.Count, Billed.Count, Reject.Count, Ongoing.Count, ClientEmailDateTime, ClientEmail, Remarks)
     End Sub
 
     Public Overrides Function ToString() As String
@@ -214,9 +252,9 @@ Public Class BOLInfo
 
     <Xml.Serialization.XmlIgnore> Public ProductionRow As DataGridViewRow
     Public Sub RefreshProductionRow()
-        Dim foundBOL As String() = Directory.GetFiles(Batch.DateFolder, String.Format("*{0}_{1}_{2}_{3}.XML", Batch.TripNo, ProNo, FBNo, Username))
+        Dim foundBOL As String() = Directory.GetFiles(Batch.DateFolder, String.Format("*{0}_{1}_{2}_{3}.XML", Batch.TripNo, ProNo, FBNo, Username), SearchOption.AllDirectories)
         If foundBOL.Length > 0 Then
-            Dim tempBOL As BOLInfo = XmlSerialization.ReadFromFile(foundBOL(0), foundBOL)
+            Dim tempBOL As BOLInfo = XmlSerialization.ReadFromFile(foundBOL(0), New BOLInfo)
             With tempBOL
                 Status = .Status
                 Entry = .Entry

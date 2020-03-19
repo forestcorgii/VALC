@@ -21,11 +21,6 @@ Public Class frmMain
 
         bolContainer = New BOLInfos
         batchContainer = New BatchInfos
-        userInfo = New clsUserInfo() With {.Username = "DDCUSER109", .Fullname = "FERNANDEZ, SEAN IVAN M."}
-        'If login() = False Then
-        '    Close()
-        '    Exit Sub
-        'End If
 
         If Not Directory.Exists(My.Settings.ProductionPath) Then
             MsgBox("Production Path not found.")
@@ -34,12 +29,26 @@ Public Class frmMain
         productionPath = My.Settings.ProductionPath
         clearFields()
 
+        collectBatches()
+        If batchContainer.Count > 0 Then
+            If batchContainer(0).Time <> Nothing Then
+                userInfo = New clsUserInfo() 'With {.Username = "DDCUSER109", .Fullname = "FERNANDEZ, SEAN IVAN M."}
+                If login() = False Then
+                    Close()
+                    Exit Sub
+                End If
+            Else : MsgBox("Time Manager is not running")
+            End If
+        Else : MsgBox("No available batches found")
+        End If
+
         tm_Tick(tm, Nothing)
         tm.Enabled = True
         tm.Interval = 1000
     End Sub
 
     Private Sub collectPronumbers()
+        If userInfo Is Nothing Then Exit Sub
         Dim pros As New List(Of BOLInfo)
         pros.AddRange(BOLInfos.collectProNumbers(userInfo.Username, dateFolder, BOLInfo.BOLStatus.FINISH))
         pros.AddRange(BOLInfos.collectProNumbers(userInfo.Username, dateFolder, BOLInfo.BOLStatus.QUERY))
@@ -52,7 +61,7 @@ Public Class frmMain
                     .Batch = batchContainer.Find(.Batch.TripNo)
                     .ProductionRow = New DataGridViewRow
                     .ProductionRow.CreateCells(dgvProduction)
-                    .ProductionRow.SetValues(.Batch.ClientEmailDateTime, .Batch.Folder, .Batch.TripNo, .ProNo, .FBNo, .Remarks, .Status, .Entry(.Entry.Count - 1).Start, .Entry(.Entry.Count - 1).Endd)
+                    .ProductionRow.SetValues(.Batch.ClientEmailDateTime, .Batch.Folder, .Batch.TripNo, .ProNo, .FBNo, .Remarks, .Status, .Entry(.Entry.Count - 1).Start, .Entry(.Entry.Count - 1).Endd, .Remarks)
                     bolContainer.Add(pro)
                     dgvProduction.Rows.Add(.ProductionRow)
                     'dgvProduction.Rows.Add(.Batch.ClientEmailDateTime, .Batch.Folder, .Batch.TripNo, .ProNo, .FBNo, .Remarks, .Status, .Entry(0).Start, .Entry(0).Endd)
@@ -82,6 +91,7 @@ Public Class frmMain
     End Sub
 
     Private Sub collectFeedback()
+        If userInfo Is Nothing Then Exit Sub
         dgvQueryAnswer.Rows.Clear()
         Dim _answeredQuery As String = dateFolder & "\PROCESSED\QUERY\ANSWERED\"
         If Directory.Exists(_answeredQuery) Then
@@ -132,19 +142,22 @@ Public Class frmMain
             End If
         End If
 
-        If tbFolder.Text = "" Then Return False
+        If tbFolder.Text = "" Then
+            MsgBox("Folder is blank")
+            Return False
+        End If
+
         'If Date.TryParse(tbStarttime.Text, New Date) = False Then
         '    MsgBox("Invalid Datetime format on Start Time")
         '    Return False
         'End If
+        If bolHolder.Batch.CheckTimeManagerActivity(5) = False Then Return False
         Return True
     End Function
     Private Sub clearFields()
-        tbTripNumber.Text = ""
         tbProNumber.Text = ""
         tbFBNumber.Text = ""
-        tbFolder.Text = ""
-
+    
         ' tbAudittime.Text = ""
         tbStarttime.Text = ""
         tbEndtime.Text = ""
@@ -212,11 +225,11 @@ Public Class frmMain
                 .Username = userInfo.Username
                 .Fullname = userInfo.Fullname
 
-                .Status = "on"
-                .Query = New List(Of QueryInfo)
-                .QueryToVALC = New List(Of QueryInfo)
+                ' .Status = "on"
+                ' .Query = New List(Of QueryInfo)
+                ' .QueryToVALC = New List(Of QueryInfo)
 
-                .Entry = New List(Of TimeInfo)
+                '  .Entry = New List(Of TimeInfo)
                 Using holder As New sfrmHolder(bolHolder, New TimeInfo With {.Start = bolHolder.Batch.Time.ToString("yyyy-MM-dd HH:mm:ss")}) 'Date.Parse(tbStarttime.Text)
                     .Write(BOLInfo.BOLStatus.ONGOING)
                     If holder.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -252,17 +265,15 @@ Public Class frmMain
 
     Private Sub bgRefresher_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles bgRefresher.DoWork
         Try
-            dgvBatches.Invoke(Sub()
-                                  collectBatches()
-                                  refreshBatches()
-                              End Sub)
-            dgvQueryAnswer.Invoke(Sub() collectFeedback())
-            dgvProduction.Invoke(Sub()
-                                     collectPronumbers()
-                                     refreshBOL()
-                                 End Sub)
+            Invoke(Sub()
+                       collectBatches()
+                       refreshBatches()
+                       collectFeedback()
+                       collectPronumbers()
+                       refreshBOL()
+                   End Sub)
         Catch ex As Exception
-            ' MsgBox(ex.ToString)
+            MsgBox(ex.ToString)
         End Try
     End Sub
 

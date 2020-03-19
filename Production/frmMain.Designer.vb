@@ -44,6 +44,12 @@ Partial Class frmMain
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.dgvQueryAnswer = New System.Windows.Forms.DataGridView()
+        Me.clSendTime = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.clTrip = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.clProNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.clFBNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.clQueryContent = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.clQueryAnswer = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.dgvBatches = New System.Windows.Forms.DataGridView()
         Me.tm = New System.Windows.Forms.Timer(Me.components)
         Me.bgRefresher = New System.ComponentModel.BackgroundWorker()
@@ -73,12 +79,7 @@ Partial Class frmMain
         Me.clsOngoing = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.clsDatetime = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.clSender = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.clSendTime = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.clTrip = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.clProNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.clFBNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.clQueryContent = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.clQueryAnswer = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.clBatchRemarks = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.MenuStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         CType(Me.dgvQueryAnswer, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -110,13 +111,13 @@ Partial Class frmMain
         '
         Me.mnAddBill.Name = "mnAddBill"
         Me.mnAddBill.ShortcutKeys = System.Windows.Forms.Keys.F1
-        Me.mnAddBill.Size = New System.Drawing.Size(134, 22)
+        Me.mnAddBill.Size = New System.Drawing.Size(152, 22)
         Me.mnAddBill.Text = "Add Bill"
         '
         'mnRelogin
         '
         Me.mnRelogin.Name = "mnRelogin"
-        Me.mnRelogin.Size = New System.Drawing.Size(134, 22)
+        Me.mnRelogin.Size = New System.Drawing.Size(152, 22)
         Me.mnRelogin.Text = "Re-Login"
         '
         'mnSettings
@@ -128,10 +129,12 @@ Partial Class frmMain
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.lbFullname, Me.lbUsername})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 397)
+        Me.StatusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 399)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Padding = New System.Windows.Forms.Padding(1, 0, 16, 0)
-        Me.StatusStrip1.Size = New System.Drawing.Size(982, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(982, 20)
+        Me.StatusStrip1.SizingGrip = False
         Me.StatusStrip1.TabIndex = 1
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -144,8 +147,10 @@ Partial Class frmMain
         'lbUsername
         '
         Me.lbUsername.Name = "lbUsername"
-        Me.lbUsername.Size = New System.Drawing.Size(68, 17)
+        Me.lbUsername.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.lbUsername.Size = New System.Drawing.Size(68, 15)
         Me.lbUsername.Text = "USERNAME"
+        Me.lbUsername.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal
         '
         'cbRemark
         '
@@ -291,13 +296,55 @@ Partial Class frmMain
         Me.dgvQueryAnswer.Size = New System.Drawing.Size(963, 93)
         Me.dgvQueryAnswer.TabIndex = 14
         '
+        'clSendTime
+        '
+        Me.clSendTime.HeaderText = "Time Sent"
+        Me.clSendTime.Name = "clSendTime"
+        Me.clSendTime.ReadOnly = True
+        Me.clSendTime.Width = 140
+        '
+        'clTrip
+        '
+        Me.clTrip.HeaderText = "Trip #"
+        Me.clTrip.Name = "clTrip"
+        Me.clTrip.ReadOnly = True
+        Me.clTrip.Width = 75
+        '
+        'clProNumber
+        '
+        Me.clProNumber.HeaderText = "Pro #"
+        Me.clProNumber.Name = "clProNumber"
+        Me.clProNumber.ReadOnly = True
+        Me.clProNumber.Width = 75
+        '
+        'clFBNumber
+        '
+        Me.clFBNumber.HeaderText = "FB #"
+        Me.clFBNumber.Name = "clFBNumber"
+        Me.clFBNumber.ReadOnly = True
+        Me.clFBNumber.Width = 75
+        '
+        'clQueryContent
+        '
+        Me.clQueryContent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.clQueryContent.HeaderText = "Query"
+        Me.clQueryContent.Name = "clQueryContent"
+        Me.clQueryContent.ReadOnly = True
+        '
+        'clQueryAnswer
+        '
+        Me.clQueryAnswer.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.clQueryAnswer.HeaderText = "Query Answer"
+        Me.clQueryAnswer.Name = "clQueryAnswer"
+        Me.clQueryAnswer.ReadOnly = True
+        '
         'dgvBatches
         '
         Me.dgvBatches.AllowUserToAddRows = False
         Me.dgvBatches.AllowUserToDeleteRows = False
         Me.dgvBatches.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
         Me.dgvBatches.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvBatches.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.clFilename, Me.clsTripNumber, Me.clTA, Me.clsBillCount, Me.clsForEntry, Me.clQuery, Me.clsBilled, Me.clReject, Me.clsOngoing, Me.clsDatetime, Me.clSender})
+        Me.dgvBatches.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.clFilename, Me.clsTripNumber, Me.clTA, Me.clsBillCount, Me.clsForEntry, Me.clQuery, Me.clsBilled, Me.clReject, Me.clsOngoing, Me.clsDatetime, Me.clSender, Me.clBatchRemarks})
         Me.dgvBatches.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvBatches.Location = New System.Drawing.Point(3, 3)
         Me.dgvBatches.MultiSelect = False
@@ -533,47 +580,11 @@ Partial Class frmMain
         Me.clSender.Name = "clSender"
         Me.clSender.ReadOnly = True
         '
-        'clSendTime
+        'clBatchRemarks
         '
-        Me.clSendTime.HeaderText = "Time Sent"
-        Me.clSendTime.Name = "clSendTime"
-        Me.clSendTime.ReadOnly = True
-        Me.clSendTime.Width = 140
-        '
-        'clTrip
-        '
-        Me.clTrip.HeaderText = "Trip #"
-        Me.clTrip.Name = "clTrip"
-        Me.clTrip.ReadOnly = True
-        Me.clTrip.Width = 75
-        '
-        'clProNumber
-        '
-        Me.clProNumber.HeaderText = "Pro #"
-        Me.clProNumber.Name = "clProNumber"
-        Me.clProNumber.ReadOnly = True
-        Me.clProNumber.Width = 75
-        '
-        'clFBNumber
-        '
-        Me.clFBNumber.HeaderText = "FB #"
-        Me.clFBNumber.Name = "clFBNumber"
-        Me.clFBNumber.ReadOnly = True
-        Me.clFBNumber.Width = 75
-        '
-        'clQueryContent
-        '
-        Me.clQueryContent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.clQueryContent.HeaderText = "Query"
-        Me.clQueryContent.Name = "clQueryContent"
-        Me.clQueryContent.ReadOnly = True
-        '
-        'clQueryAnswer
-        '
-        Me.clQueryAnswer.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.clQueryAnswer.HeaderText = "Query Answer"
-        Me.clQueryAnswer.Name = "clQueryAnswer"
-        Me.clQueryAnswer.ReadOnly = True
+        Me.clBatchRemarks.HeaderText = "Remarks"
+        Me.clBatchRemarks.Name = "clBatchRemarks"
+        Me.clBatchRemarks.ReadOnly = True
         '
         'frmMain
         '
@@ -657,21 +668,22 @@ Partial Class frmMain
     Friend WithEvents clStatus As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents clStarttime As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents clEndtime As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents clFilename As DataGridViewTextBoxColumn
-    Friend WithEvents clsTripNumber As DataGridViewTextBoxColumn
-    Friend WithEvents clTA As DataGridViewTextBoxColumn
-    Friend WithEvents clsBillCount As DataGridViewTextBoxColumn
-    Friend WithEvents clsForEntry As DataGridViewTextBoxColumn
-    Friend WithEvents clQuery As DataGridViewTextBoxColumn
-    Friend WithEvents clsBilled As DataGridViewTextBoxColumn
-    Friend WithEvents clReject As DataGridViewTextBoxColumn
-    Friend WithEvents clsOngoing As DataGridViewTextBoxColumn
-    Friend WithEvents clsDatetime As DataGridViewTextBoxColumn
-    Friend WithEvents clSender As DataGridViewTextBoxColumn
     Friend WithEvents clSendTime As DataGridViewTextBoxColumn
     Friend WithEvents clTrip As DataGridViewTextBoxColumn
     Friend WithEvents clProNumber As DataGridViewTextBoxColumn
     Friend WithEvents clFBNumber As DataGridViewTextBoxColumn
     Friend WithEvents clQueryContent As DataGridViewTextBoxColumn
     Friend WithEvents clQueryAnswer As DataGridViewTextBoxColumn
+    Friend WithEvents clFilename As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents clsTripNumber As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents clTA As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents clsBillCount As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents clsForEntry As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents clQuery As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents clsBilled As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents clReject As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents clsOngoing As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents clsDatetime As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents clSender As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents clBatchRemarks As System.Windows.Forms.DataGridViewTextBoxColumn
 End Class

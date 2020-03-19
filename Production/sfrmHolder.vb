@@ -24,12 +24,16 @@
             lbRemark.Text = .Remarks
         End With
 
-        tm.Enabled = True
+        tmRefresher.Enabled = True
     End Sub
 
-    Private Sub tm_Tick(sender As Object, e As EventArgs) Handles tm.Tick
+    Private Sub tm_Tick(sender As Object, e As EventArgs) Handles tmRefresher.Tick
+        Me.Invoke(Sub() tmRefresher.Enabled = False)
         Dim tm As TimeSpan = (BOL.Batch.Time - Date.Parse(TimeInf.Start))
         lbElapsetime.Text = String.Format("{0:00}:{1:00}:{2:00}", tm.Hours, tm.Minutes, tm.Seconds)
+
+        BOL.Batch.CheckTimeManagerActivity(5)
+        Me.Invoke(Sub() tmRefresher.Enabled = True)
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
